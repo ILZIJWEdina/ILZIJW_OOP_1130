@@ -2,53 +2,32 @@ from datetime import date
 from szoba import EgyagyasSzoba, KetagyasSzoba
 from szalloda import Szalloda
 
-# Felhasználótól kérjük be a szálloda nevét
-szalloda_nev = input("Kérem, adja meg a szálloda nevét: ")
+# Felhasználótól kérjen be adatokat
+hotel_nev = input("Adja meg a szálloda nevét: ")
+szobak = []
 
-# Hozzuk létre a szállodát a megadott névvel
-szalloda = Szalloda(szalloda_nev)
-
-# Kérjük be a felhasználótól szobák adatait
 while True:
-    szobaszam = input("Adja meg a szoba számát (üres mező kilépéshez): ")
-    if not szobaszam:
-        break
-
+    szobaszam = input("Adja meg a szobaszámot: ")
     szoba_tipus = input("Adja meg a szoba típusát (egyagyas/ketagyas): ").lower()
     ar = int(input("Adja meg a szoba árát: "))
 
-    # Az egy- vagy kétágyas szoba típusától függően hozzuk létre a szobát
     if szoba_tipus == "egyagyas":
-        szoba = EgyagyasSzoba(szobaszam, ar)
+        szobak.append(EgyagyasSzoba(szobaszam, ar))
     elif szoba_tipus == "ketagyas":
-        szoba = KetagyasSzoba(szobaszam, ar)
+        szobak.append(KetagyasSzoba(szobaszam, ar))
     else:
-        print("Ismeretlen szoba típus. Egy vagy ketagyas lehet.")
+        print("Hibás szoba típus. Csak 'egyagyas' vagy 'ketagyas' elfogadott.")
 
-    # Adjuk hozzá a szobát a szállodához
-    szalloda.add_szoba(szoba)
-
-# Kiírjuk a szobák adatait
-szalloda.listaz_szobak()
-
-
-# Kérjük be a felhasználótól a foglalások adatait
-while True:
-    datum = input("Adja meg a foglalás dátumát (üres mező kilépéshez): ")
-    if not datum:
+    ujabb = input("Szeretne még hozzáadni szobát? (igen/nem): ").lower()
+    if ujabb != "igen":
         break
 
-    szobaszam = input("Adja meg a szobaszámot a foglaláshoz: ")
+# Szálloda létrehozása
+szalloda = Szalloda(hotel_nev)
 
-    # Foglaljuk le a megadott szobát a megadott dátumra
-    foglalas = szalloda.foglalas(szobaszam, datum)
+# Szobák hozzáadása a szállodához
+for szoba in szobak:
+    szalloda.uj_szoba(szoba)
 
-    # Ha a foglalás sikeres volt, írjuk ki a foglalás adatait
-    if foglalas:
-        print("Foglalás sikeres:\n", foglalas)
-    else:
-        print("Nem sikerült foglalni a szobát. Szoba foglalt vagy nem létezik.")
-
-# Kiírjuk a foglalásokat
-szalloda.listaz_foglalasok()
-
+# Szobák listázása
+szalloda.osszes_foglalas()

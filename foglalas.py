@@ -1,12 +1,11 @@
-class Foglalas:
-    id_counter = 1
-
-    def __init__(self, szoba, datum, ar):
-        self.id = Foglalas.id_counter
-        Foglalas.id_counter += 1
+class Foglalás:
+    def __init__(self, szoba, datum):
         self.szoba = szoba
         self.datum = datum
-        self.ar = ar
 
     def __str__(self):
-        return f"Foglalás ID: {self.id}, Szoba: {self.szoba.szam}, Dátum: {self.datum}, Ár: {self.ar} Ft."
+        return f"Foglalás a(z) {self.szoba.szalloda_nev} szállodában:\n" \
+               f"Szoba típusa: {self.szoba.szoba_tipus()}\n" \
+               f"Szobaszám: {self.szoba.szobaszam}\n" \
+               f"Dátum: {self.datum}\n" \
+               f"Ár: {self.szoba.ar} Ft\n---------------------------"
