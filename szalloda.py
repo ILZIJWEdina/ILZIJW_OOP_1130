@@ -44,5 +44,3 @@ class Szalloda:
             if foglalas.szoba.szobaszam == szobaszam and foglalas.datum == datum:
                 return False
         return True
-
-# Egyéb kód, ami a fő fájlban lehet
