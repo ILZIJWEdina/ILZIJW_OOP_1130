@@ -22,5 +22,3 @@ class KetagyasSzoba(Szoba):
 
     def szoba_tipus(self):
         return "Kétágyas szoba"
-
-    

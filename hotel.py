@@ -52,4 +52,3 @@ while True:
 # Kiírjuk a foglalásokat
 szalloda.listaz_foglalasok()
 
-
