@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timedelta
 from szoba import EgyagyasSzoba, KetagyasSzoba
 from szalloda import Szalloda
 
@@ -29,17 +29,24 @@ def main():
             szalloda.uj_szoba(szoba)
 
         elif valasztas == "2":
-            szalloda.listaz_szobak()
-            foglalasokat_listazza(szalloda)
+            if szalloda.szobak:
+                szalloda.listaz_szobak()
+                foglalasokat_listazza(szalloda)
+            else:
+                print("Nincsenek még hozzáadott szobák.")
 
         elif valasztas == "3":
             foglalas_szobaszam = input("Adja meg a foglalandó szoba számát: ")
-            datum = input("Adja meg a foglalás dátumát (YYYY-MM-DD formátumban): ")
+            datum_str = input("Adja meg a foglalás dátumát (YYYY-MM-DD formátumban): ")
 
-            if is_valid_date(datum):
-                foglalas_osszeg = szalloda.foglalas(foglalas_szobaszam, datum)
-                if foglalas_osszeg > 0:
-                    print(f"A foglalás összege: {foglalas_osszeg} Ft")
+            if is_valid_date(datum_str):
+                datum = datetime.strptime(datum_str, "%Y-%m-%d").date()
+                if szalloda.is_szoba_szabad(foglalas_szobaszam, datum):
+                    foglalas_osszeg = szalloda.foglalas(foglalas_szobaszam, datum)
+                    if foglalas_osszeg > 0:
+                        print(f"A foglalás összege: {foglalas_osszeg} Ft")
+                else:
+                    print(f"A(z) {datum} dátumra a {foglalas_szobaszam} szoba már foglalt.")
             else:
                 print("Hibás dátum formátum vagy már múltbeli dátumot adott meg.")
 
@@ -51,14 +58,17 @@ def main():
 
 def is_valid_date(date_str):
     try:
-        datum = date.fromisoformat(date_str)
+        datum = datetime.strptime(date_str, "%Y-%m-%d").date()
         return datum >= date.today()
     except ValueError:
         return False
 
 def foglalasokat_listazza(szalloda):
-    print("\nSzálloda foglalások:")
-    szalloda.osszes_foglalas()
+    if szalloda.foglalasok:
+        print("\nSzálloda foglalások:")
+        szalloda.osszes_foglalas()
+    else:
+        print("Nincsenek még foglalások a szállodában.")
 
 if __name__ == "__main__":
     main()

@@ -1,10 +1,18 @@
+# szalloda.py
+
 class Szalloda:
     def __init__(self, nev):
         self.nev = nev
         self.szobak = []
+        self.foglalasok = []
 
     def uj_szoba(self, szoba):
         self.szobak.append(szoba)
+
+    def listaz_szobak(self):
+        print(f"Szobák a(z) {self.nev} szállodában:")
+        for szoba in self.szobak:
+            print(f"Szoba száma: {szoba.szobaszam}, Típus: {szoba.szoba_tipus()}, Ár: {szoba.ar} Ft")
 
     def foglalas(self, szobaszam, datum):
         for szoba in self.szobak:
@@ -27,7 +35,14 @@ class Szalloda:
 
     def osszes_foglalas(self):
         print(f"A(z) {self.nev} szálloda összes foglalása:")
-        for szoba in self.szobak:
-            print(f"Szoba típusa: {szoba.szoba_tipus()}, Szobaszám: {szoba.szobaszam}")
+        for foglalas in self.foglalasok:
+            print(f"Szoba típusa: {foglalas.szoba.szoba_tipus()}, Szobaszám: {foglalas.szoba.szobaszam}")
         print("---------------------------")
 
+    def is_szoba_szabad(self, szobaszam, datum):
+        for foglalas in self.foglalasok:
+            if foglalas.szoba.szobaszam == szobaszam and foglalas.datum == datum:
+                return False
+        return True
+
+# Egyéb kód, ami a fő fájlban lehet
